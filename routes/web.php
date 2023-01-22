@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,18 @@ Route::post('/register', [UserController::class, 'storeRegister'])->name('regist
 Route::get('/otp/{id}', [UserController::class, 'viewOtp'])->name('otp');
 Route::post('/otp/{id}', [UserController::class, 'checkOtp'])->name('otp.verify');
 
-Route::middleware('auth', 'account.verified')->group(function () {
+
+// Route::get('/forgot-password', [ResetPasswordController::class, 'index'])->name('forgot.password')->middleware('guest');
+// Route::post('/forgot-password', [ResetPasswordController::class, 'findAccountByEmail'])->name('forgot.password')->middleware('guest');
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/forgot-password', [ResetPasswordController::class, 'index'])->name('password.request');
+    Route::post('/forgot-password', [ResetPasswordController::class, 'findAccountByEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'resetPasswordForm'])->name('password.reset');
+    Route::post('reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
+});
+
+Route::middleware(['auth', 'account.verified'])->group(function () {
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
     Route::get('/', [BookController::class, 'index']);

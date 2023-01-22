@@ -21,16 +21,19 @@ class UserSeeder extends Seeder
                 'name' => 'John Doe',
                 'email' => 'john@test.test',
                 'password' => Hash::make('password'),
+                'email_verified_at' => now(),
             ],
             [
                 'name' => 'Jane Doe',
                 'email' => 'jane@test.test',
                 'password' => Hash::make('password'),
+                'email_verified_at' => now(),
             ],
             [
                 'name' => 'Jack Doe',
                 'email' => 'jack@test.test',
                 'password' => Hash::make('password'),
+                'email_verified_at' => now(),
             ],
         ])->each(function ($user) {
             User::create($user);
